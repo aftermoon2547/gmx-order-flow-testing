@@ -1,0 +1,29 @@
+name: Foundry Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run GMX V2 Fork Tests
+    runs-on: ubuntu-latest
+
+    env:
+      ARBITRUM_RPC_URL: ${{ secrets.ARBITRUM_RPC_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Run Forge tests
+        run: forge test --fork-url "$ARBITRUM_RPC_URL" -vv

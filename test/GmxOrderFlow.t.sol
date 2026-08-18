@@ -49,7 +49,7 @@ contract GmxOrderFlowTest is Test, GmxForkHelpers {
     address keeper;
 
     function setUp() public {
-	vm.createSelectFork("http://127.0.0.1:8545", FORK_BLOCK_NUMBER);
+	vm.createSelectFork(vm.envString("ARBITRUM_RPC_URL"), FORK_BLOCK_NUMBER);
         console.log("=== Fork Setup ===");
         console.log("Chain ID:", block.chainid);
         console.log("Block number:", block.number);
