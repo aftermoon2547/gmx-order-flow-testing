@@ -63,7 +63,7 @@ abstract contract GmxForkHelpers is Test {
     /// @dev Hardcoded for simplicity in this example. In production, this should be calculated
     /// based on gas limits from DataStore, multiplier factors, oracle price counts and current gas price
     function getExecutionFee() internal pure returns (uint256) {
-        return 0.0002 ether;
+        return 0.1 ether;
     }
 
     // ============================================================================

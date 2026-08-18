@@ -49,7 +49,7 @@ contract GmxOrderFlowTest is Test, GmxForkHelpers {
     address keeper;
 
     function setUp() public {
-	vm.createSelectFork("http://127.0.0.1:8545", 392496384);
+	vm.createSelectFork("http://127.0.0.1:8545", FORK_BLOCK_NUMBER);
         console.log("=== Fork Setup ===");
         console.log("Chain ID:", block.chainid);
         console.log("Block number:", block.number);
@@ -217,11 +217,18 @@ contract GmxOrderFlowTest is Test, GmxForkHelpers {
         orderParams.autoCancel = true;
 
         vm.startPrank(user);
+
         uint256 totalEthNeeded = orderParams.numbers.initialCollateralDeltaAmount;
-        exchangeRouter.sendWnt{value: totalEthNeeded}(GmxArbitrumAddresses.ORDER_VAULT, totalEthNeeded);
+
+        exchangeRouter.sendWnt{value: totalEthNeeded}(
+            GmxArbitrumAddresses.ORDER_VAULT,
+            totalEthNeeded
+        );
+
         orderKey = exchangeRouter.createOrder{value: 0}(orderParams);
+
         vm.stopPrank();
-    }
+        }
 
     /// Execute an order as keeper
     /// @param orderKey The order key to execute
