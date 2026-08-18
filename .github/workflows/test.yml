@@ -25,5 +25,17 @@ jobs:
         with:
           version: stable
 
+      - name: Check Arbitrum RPC
+        run: |
+          if [ -z "$ARBITRUM_RPC_URL" ]; then
+            echo "ARBITRUM_RPC_URL is empty"
+            exit 1
+          fi
+
+          curl -sS --fail \
+            -H "Content-Type: application/json" \
+            --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
+            "$ARBITRUM_RPC_URL"
+
       - name: Run Forge tests
         run: forge test --fork-url "$ARBITRUM_RPC_URL" -vv
