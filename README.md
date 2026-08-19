@@ -1,15 +1,17 @@
 # GMX V2 Order Flow Testing & Research
 
+![Foundry Tests](https://github.com/aftermoon2547/gmx-order-flow-testing/actions/workflows/test.yml/badge.svg)
+
 A Foundry-based research and testing project for exploring **GMX V2 order execution flows on Arbitrum**.
 
-This project simulates and validates the lifecycle of GMX V2 perpetual trading orders using an Arbitrum mainnet fork environment.
+This project reproduces and validates GMX V2 perpetual trading order lifecycles using an **Arbitrum One mainnet fork** and automated **GitHub Actions CI**.
 
 ## Overview
 
 The goal of this repository is to study how GMX V2 handles:
 
 - Creating increase orders
-- Executing orders through keepers
+- Executing orders through keeper flows
 - Opening long positions
 - Creating decrease orders
 - Closing positions
@@ -17,21 +19,25 @@ The goal of this repository is to study how GMX V2 handles:
 
 ## Tech Stack
 
-- **Solidity**
-- **Foundry**
-- **Forge Tests**
-- **Arbitrum Mainnet Fork**
-- **GMX V2 Contracts**
+- **Solidity 0.8.24**
+- **Foundry / Forge**
+- **GMX V2**
+- **Arbitrum One**
+- **Mainnet fork testing**
+- **GitHub Actions**
 
 ## Testing Environment
 
-Tests run against a local Arbitrum fork using Foundry.
+Tests run against an Arbitrum One mainnet fork using Foundry.
+
+The same test suite is automatically executed through GitHub Actions CI.
 
 Environment:
 
 - Chain: Arbitrum One
-- Fork testing with Anvil
-- Solidity version: 0.8.24
+- Fork block: `392496384`
+- Solidity: `0.8.24`
+- Framework: Foundry
 
 ## Implemented Flows
 
@@ -42,26 +48,37 @@ The test flow:
 1. Fund test user with ETH
 2. Create GMX increase order
 3. Send collateral to Order Vault
-4. Execute order using keeper flow
-5. Validate created position
+4. Execute order through keeper flow
+5. Validate the created position
 
 ### Close Long Position
 
 The test flow:
 
 1. Create an existing position
-2. Create decrease order
-3. Execute decrease order
+2. Create a decrease order
+3. Execute the decrease order
 4. Validate received assets
 
 ## Test Results
 
-Latest successful run:
+Latest successful CI run:
 
 - `testOpenLongPosition()` — PASS
 - `testCloseLongPosition()` — PASS
 
-Result:
+**2 tests passed, 0 failed, 0 skipped.**
+
+## Continuous Integration
+
+Every push to the `main` branch triggers GitHub Actions to:
+
+1. Install the Foundry toolchain
+2. Compile Solidity contracts
+3. Connect to an Arbitrum One mainnet fork
+4. Execute GMX V2 integration tests
+
+Current CI status:
 
 **2 tests passed, 0 failed, 0 skipped.**
 
@@ -71,13 +88,13 @@ The tests use a local Arbitrum fork and simulate GMX V2 order execution.
 
 A mock oracle provider is used during execution to provide deterministic WETH and USDC prices.
 
-The current test configuration uses:
+Current test configuration:
 
-- WETH price: $3,892
-- USDC price: $1
-- ETH collateral: 0.001 ETH
-- Position size: approximately $9
-- Execution fee: 0.1 ETH
+- WETH price: `$3,892`
+- USDC price: `$1`
+- ETH collateral: `0.001 ETH`
+- Position size: approximately `$9`
+- Execution fee: simulated test value
 
 ## Repository Structure
 
@@ -89,6 +106,10 @@ contracts/
 
 test/
 └── GmxOrderFlow.t.sol
+
+.github/
+└── workflows/
+    └── test.yml
 
 foundry.toml
 foundry.lock
